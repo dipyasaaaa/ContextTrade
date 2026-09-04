@@ -208,7 +208,8 @@ def get_smart_watchlist(username: str):
             "status": "connected",
             "provider": "Yahoo Finance Direct Feed",
             "latency_ms": 42,
-            "markets_supported": ["US (NYSE/NASDAQ)", "India (NSE/BSE)"]
+            "markets_supported": ["US (NYSE/NASDAQ)", "India (NSE/BSE)"],
+            "integrity_signature": f"sha256-{signature}"
         },
         "last_viewed_at": last_viewed_at_str,
         "watchlists": result_watchlists
