@@ -106,16 +106,21 @@ import yfinance as yf
 
 def fetch_live_price(ticker_symbol: str) -> float:
     try:
-        # Create a custom session to bypass Yahoo Finance bot detection
+        # Groww Hackathon Polish: Auto-append .NS for Indian stocks if they don't have a suffix
+        query_ticker = ticker_symbol
+        indian_bluechips = ["RELIANCE", "TCS", "INFY", "HDFCBANK", "ZOMATO"]
+        if query_ticker in indian_bluechips:
+            query_ticker = f"{query_ticker}.NS"
+
         session = requests.Session()
         session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'})
         
-        ticker_obj = yf.Ticker(ticker_symbol, session=session)
+        ticker_obj = yf.Ticker(query_ticker, session=session)
         todays_data = ticker_obj.history(period="1d", timeout=5)
         
         if not todays_data.empty:
             price = float(todays_data['Close'].iloc[-1])
-            print(f"🔥 [LIVE EXCHANGE SYNC SUCCESS] {ticker_symbol} -> ${price:.2f}")
+            print(f"🔥 [LIVE EXCHANGE SYNC SUCCESS] {query_ticker} -> {price:.2f}")
             return price
     except Exception as e:
         print(f"⚠️ [LIVE SYNC NOTICE] Fallback engaged for {ticker_symbol}: {e}")
@@ -185,6 +190,7 @@ def get_smart_watchlist(username: str):
                 "financials": market["financials"],
                 "is_stale": False
             })
+        enriched_items.sort(key=lambda x: abs(x["deltas"]["since_last_checked_pct"]), reverse=True)
 
         result_watchlists.append({
             "id": wl["id"],
