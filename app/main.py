@@ -4,6 +4,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import supabase
 from app.models import UserSessionUpdate, WatchlistItemAdd
+import hashlib
 
 
 app = FastAPI(title="Smart Market Watchlist Engine")
@@ -191,6 +192,9 @@ def get_smart_watchlist(username: str):
             "intent": wl.get("intent", "General"),
             "items": enriched_items
         })
+# Generate a unique cryptographic signature for the session
+    signature_base = f"{username}-{last_viewed_at_str}"
+    signature = hashlib.sha256(signature_base.encode()).hexdigest()[:16]
 
     return {
         "user": username,
