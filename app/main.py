@@ -2,8 +2,8 @@ from datetime import datetime, timezone
 from typing import Dict, Any, List
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from app.database import supabase
-from app.models import UserSessionUpdate, WatchlistItemAdd
+from database import supabase
+from models import UserSessionUpdate, WatchlistItemAdd
 import hashlib
 
 
