@@ -52,4 +52,11 @@ cd app
 python -m venv venv
 source venv/bin/activate
 pip install fastapi uvicorn yfinance supabase requests
-uvicorn main:app --reload
+uvicorn main:app --reload ```#
+
+## 2. Frontend Initialization
+
+```bash
+cd frontend
+npm install
+npm run dev
